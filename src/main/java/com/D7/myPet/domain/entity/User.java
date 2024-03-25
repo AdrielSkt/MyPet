@@ -1,13 +1,12 @@
 package com.D7.myPet.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -15,11 +14,15 @@ import java.util.List;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private String email;
     private String phone;
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_pets")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_pet", joinColumns = {
+            @JoinColumn(name="tb_user")
+    }, inverseJoinColumns = {
+            @JoinColumn(name = "pet")
+    })
     private List<Pet> pets;
 }

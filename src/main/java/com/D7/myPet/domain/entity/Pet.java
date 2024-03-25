@@ -2,13 +2,13 @@ package com.D7.myPet.domain.entity;
 
 import com.D7.myPet.domain.enums.Animal;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -16,10 +16,13 @@ import java.io.Serializable;
 public class Pet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private Animal tipeOfAnimal;
     private String RaceOfAnimal;
+
+    @ManyToMany(mappedBy = "pets")
+    private List<User> owners;
 
 
 

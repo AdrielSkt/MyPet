@@ -18,7 +18,7 @@ public class userResource {
     @GetMapping
     public ResponseEntity<User> findAll() {
         List<Pet> pets = new ArrayList<>();
-        pets.add(new Pet(1L,"Kimbu", Animal.PEIXE, "Nemo"));
+//        pets.add(new Pet(1L,"Kimbu", Animal.PEIXE, "Nemo"));
         User user = new User(1L, "Adriel","adr@gmail.com","61996475173",pets);
 
         return ResponseEntity.ok().body(user);
