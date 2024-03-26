@@ -21,9 +21,4 @@ public class Pet implements Serializable {
     private Animal tipeOfAnimal;
     private String RaceOfAnimal;
 
-    @ManyToMany(mappedBy = "pets")
-    private List<User> owners;
-
-
-
 }
