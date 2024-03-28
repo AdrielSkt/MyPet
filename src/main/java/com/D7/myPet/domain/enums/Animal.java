@@ -6,13 +6,22 @@ public enum Animal {
     AVE(2),
     PEIXE(3);
 
-    private final int valor;
+    private final int code;
     private Animal(int valor) {
-        this.valor = valor;
+        this.code = valor;
     }
 
-    public int getValor() {
-        return this.valor;
+    public int getCode() {
+        return this.code;
+    }
+
+    public static Animal valueOff(int code){
+        for(Animal value: Animal.values()){
+            if(value.getCode() == code){
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("Invalid Animal code");
     }
 
 

@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class userResource {
 
     @Autowired
@@ -31,13 +31,13 @@ public class userResource {
     @PostMapping
     public ResponseEntity<User> save(@RequestBody User user){
         User userSaved = userService.save(user);
-        return ResponseEntity.created(URI.create("api/users"+userSaved.getId())).body(userSaved);
+        return ResponseEntity.created(URI.create("api/user"+userSaved.getId())).body(userSaved);
     }
 
     @PutMapping
     public ResponseEntity<User> update(@RequestBody User user){
         User userUpdated = userService.update(user);
-        return ResponseEntity.created(URI.create("api/users"+userUpdated.getId())).body(userUpdated);
+        return ResponseEntity.created(URI.create("api/user"+userUpdated.getId())).body(userUpdated);
     }
 
     @DeleteMapping(value = "/{id}")

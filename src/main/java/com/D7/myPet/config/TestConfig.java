@@ -33,17 +33,25 @@ public class TestConfig implements CommandLineRunner {
         User user2 = new User(null, "Marcus", "marc@gmail.com", "61996475173", new ArrayList<>());
 
 // Criar pets
-        Pet pet1 = new Pet(null, "Kimbu", Animal.PEIXE, "Nemo");
-        Pet pet2 = new Pet(null, "Linux", Animal.CACHORRO, "Pintcher");
-        petRepository.saveAll(Arrays.asList(pet1, pet2));
+        Pet pet1 = new Pet(null, "Kimbu", Animal.PEIXE, "Nemo", new ArrayList<>());
+        Pet pet2 = new Pet(null, "Linux", Animal.CACHORRO, "Pintcher", new ArrayList<>());
+        List<Pet> savedPets = petRepository.saveAll(Arrays.asList(pet1, pet2));
 // Adicionar pets aos usuários
         user.getPets().add(pet1);
         user2.getPets().add(pet1);
         user2.getPets().add(pet2);
 
-// Salvando pets e usuários
+// Salvando usuários
         List<User> savedUsers = userRepository.saveAll(Arrays.asList(user, user2));
 
+// atualizando pets usuários
+        savedPets.get(0).setOwners(List.of(savedUsers.get(1)));
+        savedPets.get(1).setOwners(List.of(savedUsers.get(0)));
+
+        petRepository.saveAll(savedPets);
+
+
+// Salvando pass
         Pass pass = new Pass(null,savedUsers.get(1).getId(), Base64.getDecoder().decode("VGhpcyBpcyBhIHN0cmluZw=="));
 
 
