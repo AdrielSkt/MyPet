@@ -2,22 +2,28 @@ package com.D7.myPet.service;
 
 import com.D7.myPet.domain.entity.Pet;
 import com.D7.myPet.repository.PetRepository;
+import com.D7.myPet.service.dto.PetDto;
 import com.D7.myPet.service.exeption.BusinessExeption;
+import com.D7.myPet.service.map.PetMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 @Service
+@AllArgsConstructor
 public class PetService {
 
-    @Autowired
-    private PetRepository petRepository;
+
+    private final PetRepository petRepository;
+
+    private final PetMapper petMapper;
 
 
 
-    public List<Pet> findAll(){
-        return petRepository.findAll();
+    public List<PetDto> findAll(){
+        return petMapper.toDto(petRepository.findAll());
     }
 
     public Pet findByID(Long id){

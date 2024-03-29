@@ -3,6 +3,7 @@ package com.D7.myPet.webRest;
 
 import com.D7.myPet.domain.entity.Pet;
 import com.D7.myPet.service.PetService;
+import com.D7.myPet.service.dto.PetDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class PetResources {
 
 
     @GetMapping
-    public ResponseEntity<List<Pet>> findAll(){
-        List<Pet> pets = petService.findAll();
+    public ResponseEntity<List<PetDto>> findAll(){
+        List<PetDto> pets = petService.findAll();
         return ResponseEntity.ok().body(pets);
     }
 

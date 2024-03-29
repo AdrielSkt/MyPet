@@ -20,10 +20,10 @@ public class User implements Serializable {
     private String email;
     private String phone;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_pet", joinColumns = {
-            @JoinColumn(name="tb_user")
+    @JoinTable(name = "tb_user_pet", joinColumns = {
+            @JoinColumn(name="user_id")
     }, inverseJoinColumns = {
-            @JoinColumn(name = "pet")
+            @JoinColumn(name = "pet_id")
     })
     private List<Pet> pets;
 }
