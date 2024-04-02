@@ -27,20 +27,20 @@ public class PetResources {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Pet> findById(@PathVariable Long id){
-        Pet pet = petService.findByID(id);
+    public ResponseEntity<PetDto> findById(@PathVariable Long id){
+        PetDto pet = petService.findByID(id);
         return ResponseEntity.ok().body(pet);
     }
 
     @PostMapping
-    public ResponseEntity<Pet> save(@RequestBody Pet pet){
-        Pet petSaved = petService.save(pet);
+    public ResponseEntity<PetDto> save(@RequestBody PetDto pet){
+        PetDto petSaved = petService.save(pet);
         return ResponseEntity.created(URI.create("api/pet"+petSaved.getId())).body(petSaved);
     }
 
     @PutMapping
-    public ResponseEntity<Pet> update(@RequestBody Pet pet){
-        Pet petSaved = petService.update(pet);
+    public ResponseEntity<PetDto> update(@RequestBody PetDto pet){
+        PetDto petSaved = petService.update(pet);
         return ResponseEntity.created(URI.create("api/pet"+petSaved.getId())).body(petSaved);
     }
 

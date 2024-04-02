@@ -2,7 +2,9 @@ package com.D7.myPet.service;
 
 import com.D7.myPet.domain.entity.User;
 import com.D7.myPet.repository.UserRepository;
+import com.D7.myPet.service.dto.UserDto;
 import com.D7.myPet.service.exeption.BusinessExeption;
+import com.D7.myPet.service.map.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,28 +17,34 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserMapper userMapper;
 
-    public List<User> findAll(){
-        return userRepository.findAll();
+
+    public List<UserDto> findAll(){
+        return userMapper.toDto(userRepository.findAll());
     }
 
-    public User findById(Long id){
+    public UserDto findById(Long id){
         Optional<User> user = userRepository.findById(id);
-        return user.get();
+        if(user.isPresent()){
+            return userMapper.toDto(user.get());
+        }
+        throw new BusinessExeption("The user does not exists in the database");
     }
 
-    public User save(User user){
-
+    public UserDto save(UserDto user){
+//colocar regra para a lista de pet ficar nula e o msm no pet service
         if(userRepository.existsByEmail(user.getEmail())){
             throw new BusinessExeption("email is already linked to a user");
         }
-        return userRepository.save(user);
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(user)));
     }
 
-    public User update(User user){
+    public UserDto update(UserDto user){
         userRepository.findById(user.getId()).orElseThrow(() -> new BusinessExeption("The user does not exist in the database"));
 
-            return userRepository.save(user);
+            return userMapper.toDto(userRepository.save(userMapper.toEntity(user)));
 
     }
 
@@ -45,6 +53,10 @@ public class UserService {
 
         userRepository.deleteById(id);
 
+        //colocar regra de pra caso o pet esteja vinculado a apenas este usuario ele e o relacionamento serao apagados tambem
+    }
 
+    public void deleteUserPetRelationsByPetId (Long id){
+//        userRepository.deleteUserPetRelationsByPetId(id);
     }
 }

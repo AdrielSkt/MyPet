@@ -19,8 +19,8 @@ public class User implements Serializable {
     @Column(unique = true)
     private String email;
     private String phone;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_user_pet", joinColumns = {
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @JoinTable(name = "rel_user_pet", joinColumns = {
             @JoinColumn(name="user_id")
     }, inverseJoinColumns = {
             @JoinColumn(name = "pet_id")
