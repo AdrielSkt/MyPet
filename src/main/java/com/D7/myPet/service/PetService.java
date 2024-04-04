@@ -3,6 +3,7 @@ package com.D7.myPet.service;
 import com.D7.myPet.domain.entity.Pet;
 import com.D7.myPet.repository.PetRepository;
 import com.D7.myPet.service.dto.PetDto;
+import com.D7.myPet.service.dto.UserDto;
 import com.D7.myPet.service.exeption.BusinessExeption;
 import com.D7.myPet.service.map.PetMapper;
 import lombok.AllArgsConstructor;
@@ -39,7 +40,16 @@ public class PetService {
 
 
     public PetDto save(PetDto pet){
-        return petMapper.toDto(petRepository.save(petMapper.toEntity(pet)));
+        if(pet.getOwnersId() == null || pet.getOwnersId().isEmpty()){
+            throw new BusinessExeption("OwnerID is null");
+        }
+
+        PetDto petSaved = petMapper.toDto(petRepository.save(petMapper.toEntity(pet)));
+
+        for(Long userId :pet.getOwnersId()){
+            relUserPetService.createRelation(userId,petSaved.getId());
+        }
+        return petSaved;
     }
     public PetDto update(PetDto pet){
         petRepository.findById(pet.getId()).orElseThrow(()-> new BusinessExeption("The pet does not exists in the database"));
