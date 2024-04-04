@@ -21,7 +21,7 @@ public class Pet implements Serializable {
     private Integer tipeOfAnimal;
     private String raceOfAnimal;
 
-    @JsonIgnore
+
     @ManyToMany(mappedBy = "pets", fetch = FetchType.LAZY)
     private List<User> owners;
 

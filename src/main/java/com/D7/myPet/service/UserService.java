@@ -2,10 +2,13 @@ package com.D7.myPet.service;
 
 import com.D7.myPet.domain.entity.User;
 import com.D7.myPet.repository.UserRepository;
+import com.D7.myPet.service.dto.PetDto;
 import com.D7.myPet.service.dto.UserDto;
 import com.D7.myPet.service.exeption.BusinessExeption;
 import com.D7.myPet.service.map.UserMapper;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +19,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private  RelUserPetService relUserPetService;
 
     @Autowired
     private UserMapper userMapper;
@@ -49,14 +55,18 @@ public class UserService {
     }
 
     public void delete(Long id){
-        userRepository.findById(id).orElseThrow(() -> new BusinessExeption("The user does not exist in the database"));
+        UserDto userDto = userMapper.toDto(userRepository.findById(id).orElseThrow(() -> new BusinessExeption("The user does not exist in the database")));
+        try {
+            for(PetDto pet : userDto.getPets()){
+                relUserPetService.deleteRelation(id,pet.getId());
+            }
+            userRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e){
+            userRepository.deleteById(id);
+        }
 
-        userRepository.deleteById(id);
 
-        //colocar regra de pra caso o pet esteja vinculado a apenas este usuario ele e o relacionamento serao apagados tambem
+        //colocar regra de pra caso o pet esteja vinculado a apenas este usuario ele e o relacionamento serao apagados tambem/ o hibernate faz isso automaticamente
     }
 
-    public void deleteUserPetRelationsByPetId (Long id){
-//        userRepository.deleteUserPetRelationsByPetId(id);
-    }
 }

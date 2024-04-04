@@ -6,7 +6,6 @@ import com.D7.myPet.service.dto.PetDto;
 import com.D7.myPet.service.exeption.BusinessExeption;
 import com.D7.myPet.service.map.PetMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +18,8 @@ public class PetService {
     private final PetRepository petRepository;
 
     private final UserService userService;
+
+    private final RelUserPetService relUserPetService;
 
     private final PetMapper petMapper;
 
@@ -47,8 +48,8 @@ public class PetService {
     }
 
     public void delete(Long id){
-        petRepository.findById(id).orElseThrow(()-> new BusinessExeption("The pet does not exists in the database"));
-        userService.deleteUserPetRelationsByPetId(id);
+        petMapper.toDto(petRepository.findById(id).orElseThrow(()-> new BusinessExeption("The pet does not exists in the database")));
+        relUserPetService.deleteRelationByPetId(id);
         petRepository.deleteById(id);
     }
 }

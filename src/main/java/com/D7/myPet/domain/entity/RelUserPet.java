@@ -18,7 +18,9 @@ private Ids id = new Ids();
 public RelUserPet(Long userId, Long petId){
     getId().setUserId(userId);
     getId().setPetId(petId);
+
 }
+
 
 }
 @Getter
