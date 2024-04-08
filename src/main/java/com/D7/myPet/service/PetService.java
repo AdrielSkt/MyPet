@@ -32,10 +32,8 @@ public class PetService {
 
     public PetDto findByID(Long id){
         Optional<Pet> pet = petRepository.findById(id);
-        if(pet.isPresent()){
-            return petMapper.toDto(pet.get());
-            }
-        throw new BusinessExeption("The pet does not exists in the database");
+            return petMapper.toDto(pet.orElseThrow(()-> new BusinessExeption("The pet does not exists in the database")));
+
     }
 
 

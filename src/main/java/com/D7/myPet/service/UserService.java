@@ -33,10 +33,7 @@ public class UserService {
 
     public UserDto findById(Long id){
         Optional<User> user = userRepository.findById(id);
-        if(user.isPresent()){
-            return userMapper.toDto(user.get());
-        }
-        throw new BusinessExeption("The user does not exists in the database");
+            return userMapper.toDto(user.orElseThrow(()->new BusinessExeption("The user does not exists in the database")));
     }
 
     public UserDto save(UserDto user){
